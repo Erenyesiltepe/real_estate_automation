@@ -3,11 +3,12 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
+import { AgentsModule } from './modules/agents/agents.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
-      isGlobal:true
+      isGlobal: true,
     }),
     MongooseModule.forRootAsync({
       imports: [ConfigModule],
@@ -17,6 +18,7 @@ import { MongooseModule } from '@nestjs/mongoose';
         serverApi: { version: '1', strict: true, deprecationErrors: true },
       }),
     }),
+    AgentsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

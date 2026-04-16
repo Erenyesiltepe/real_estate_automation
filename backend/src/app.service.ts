@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectConnection } from '@nestjs/mongoose';
-import { Connection } from 'mongoose';
+import { Connection, ConnectionStates } from 'mongoose';
 
 @Injectable()
 export class AppService {
@@ -19,7 +19,7 @@ export class AppService {
       3: 'disconnecting',
     };
     return {
-      status: state === 1 ? 'ok' : 'error',
+      status: state === ConnectionStates.connected ? 'ok' : 'error',
       mongodb: stateMap[state] ?? 'unknown',
     };
   }
