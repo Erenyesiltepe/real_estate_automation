@@ -40,6 +40,16 @@ export class UsersService {
     return user;
   }
 
+  async findByEmail(email: string): Promise<UserDocument> {
+    const user = await this.userModel
+      .findOne({ email: email.toLowerCase(), isActive: true })
+      .exec();
+    if (!user) {
+      throw new NotFoundException(`User ${email} not found`);
+    }
+    return user;
+  }
+
   async update(id: string, dto: UpdateUserDto): Promise<UserDocument> {
     const user = await this.userModel.findById(id).exec();
     if (!user) {

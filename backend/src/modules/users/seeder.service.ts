@@ -19,8 +19,10 @@ export class SeederService implements OnApplicationBootstrap {
     const adminExists = await this.userModel.findOne({ role: UserRole.admin });
     if (adminExists) return;
 
-    const email = this.configService.get<string>('ADMIN_EMAIL') ?? 'admin@example.com';
-    const password = this.configService.get<string>('ADMIN_PASSWORD') ?? 'changeme';
+    const email =
+      this.configService.get<string>('ADMIN_EMAIL') ?? 'admin@example.com';
+    const password =
+      this.configService.get<string>('ADMIN_PASSWORD') ?? 'changeme';
     const passwordHash = await bcrypt.hash(password, 10);
 
     await this.userModel.create({

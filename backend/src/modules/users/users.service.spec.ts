@@ -1,4 +1,8 @@
-import { BadRequestException, ConflictException, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  ConflictException,
+  NotFoundException,
+} from '@nestjs/common';
 import { getModelToken } from '@nestjs/mongoose';
 import { Test, TestingModule } from '@nestjs/testing';
 import * as bcrypt from 'bcryptjs';
@@ -115,7 +119,9 @@ describe('UsersService', () => {
         exec: () => Promise.resolve(admin),
       });
       mockUserModel.countDocuments.mockResolvedValue(1);
-      await expect(service.remove('user-id')).rejects.toThrow(BadRequestException);
+      await expect(service.remove('user-id')).rejects.toThrow(
+        BadRequestException,
+      );
     });
   });
 
