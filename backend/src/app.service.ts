@@ -6,10 +6,6 @@ import { Connection, ConnectionStates } from 'mongoose';
 export class AppService {
   constructor(@InjectConnection() private connection: Connection) {}
 
-  getHello(): string {
-    return 'Hello World!';
-  }
-
   getHealth(): object {
     const state = this.connection.readyState;
     const stateMap: Record<number, string> = {

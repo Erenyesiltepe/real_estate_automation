@@ -3,7 +3,6 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
-import { AgentsModule } from './modules/agents/agents.module';
 
 @Module({
   imports: [
@@ -18,7 +17,6 @@ import { AgentsModule } from './modules/agents/agents.module';
         serverApi: { version: '1', strict: true, deprecationErrors: true },
       }),
     }),
-    AgentsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
