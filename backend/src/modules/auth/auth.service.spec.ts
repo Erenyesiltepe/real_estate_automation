@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { JwtService } from '@nestjs/jwt';
-import { UnauthorizedException } from '@nestjs/common';
+import { NotFoundException, UnauthorizedException } from '@nestjs/common';
 import * as bcrypt from 'bcryptjs';
 import { AuthService } from './auth.service';
 import { UsersService } from '../users/users.service';
@@ -55,7 +55,7 @@ describe('AuthService', () => {
   });
 
   it('throws UnauthorizedException if user not found', async () => {
-    mockUsersService.findByEmail.mockRejectedValue(new Error('not found'));
+    mockUsersService.findByEmail.mockRejectedValue(new NotFoundException('not found'));
 
     await expect(service.signIn('noone@example.com', 'password123')).rejects.toThrow(
       UnauthorizedException,
