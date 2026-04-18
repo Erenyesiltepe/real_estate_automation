@@ -128,7 +128,7 @@ describe('UsersService', () => {
   describe('update', () => {
     it('throws NotFoundException if user does not exist on update', async () => {
       mockUserModel.findById.mockReturnValue({
-        exec: () => Promise.resolve(null),
+        where: () => ({ exec: () => Promise.resolve(null) }),
       });
       await expect(
         service.update('nonexistent-id', { name: 'Bob' }),

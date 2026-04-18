@@ -33,7 +33,10 @@ export class UsersService {
   }
 
   async findOne(id: string): Promise<UserDocument> {
-    const user = await this.userModel.findById(id).exec();
+    const user = await this.userModel
+      .findById(id)
+      .where({ isActive: true })
+      .exec();
     if (!user) {
       throw new NotFoundException(`User ${id} not found`);
     }
@@ -51,9 +54,18 @@ export class UsersService {
   }
 
   async update(id: string, dto: UpdateUserDto): Promise<UserDocument> {
-    const user = await this.userModel.findById(id).exec();
+    const user = await this.userModel
+      .findById(id)
+      .where({ isActive: true })
+      .exec();
     if (!user) {
       throw new NotFoundException(`User ${id} not found`);
+    }
+    if (dto.email && dto.email.toLowerCase() !== user.email) {
+      const conflict = await this.userModel.findOne({
+        email: dto.email.toLowerCase(),
+      });
+      if (conflict) throw new ConflictException('Email already in use');
     }
     const dtoRecord = dto as Record<string, unknown>;
     if (dtoRecord['password']) {
