@@ -8,6 +8,7 @@ import { UsersModule } from './modules/users/users.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { AuthGuard } from './modules/auth/auth.guard';
 import { PropertiesModule } from './modules/properties/properties.module';
+import { TransactionsModule } from './modules/transactions/transactions.module';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { PropertiesModule } from './modules/properties/properties.module';
     UsersModule,
     AuthModule,
     PropertiesModule,
+    TransactionsModule,
   ],
   controllers: [AppController],
   providers: [AppService, { provide: APP_GUARD, useClass: AuthGuard }],
