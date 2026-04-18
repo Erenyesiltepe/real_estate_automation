@@ -9,7 +9,9 @@ import { CommissionsModule } from '../commissions/commissions.module';
 
 @Module({
   imports: [
-    MongooseModule.forFeature([{ name: Transaction.name, schema: TransactionSchema }]),
+    MongooseModule.forFeature([
+      { name: Transaction.name, schema: TransactionSchema },
+    ]),
     UsersModule,
     PropertiesModule,
     CommissionsModule,

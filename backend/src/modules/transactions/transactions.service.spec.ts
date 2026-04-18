@@ -14,7 +14,10 @@ const mockFind = jest.fn();
 
 const mockTransactionModel = { findById: mockFindById, find: mockFind };
 
-function MockModel(this: Record<string, unknown>, dto: Record<string, unknown>) {
+function MockModel(
+  this: Record<string, unknown>,
+  dto: Record<string, unknown>,
+) {
   Object.assign(this, dto);
   this.save = mockSave;
 }
@@ -79,16 +82,28 @@ describe('TransactionsService', () => {
     it('agreement → earnest_money succeeds', async () => {
       const txn = makeTransaction({ stage: TransactionStage.agreement });
       mockFindById.mockReturnValue({ exec: () => Promise.resolve(txn) });
-      mockSave.mockResolvedValue({ ...txn, stage: TransactionStage.earnest_money });
-      const result = await service.advanceStage('txn-id', TransactionStage.earnest_money);
+      mockSave.mockResolvedValue({
+        ...txn,
+        stage: TransactionStage.earnest_money,
+      });
+      const result = await service.advanceStage(
+        'txn-id',
+        TransactionStage.earnest_money,
+      );
       expect(result.stage).toBe(TransactionStage.earnest_money);
     });
 
     it('earnest_money → title_deed succeeds', async () => {
       const txn = makeTransaction({ stage: TransactionStage.earnest_money });
       mockFindById.mockReturnValue({ exec: () => Promise.resolve(txn) });
-      mockSave.mockResolvedValue({ ...txn, stage: TransactionStage.title_deed });
-      const result = await service.advanceStage('txn-id', TransactionStage.title_deed);
+      mockSave.mockResolvedValue({
+        ...txn,
+        stage: TransactionStage.title_deed,
+      });
+      const result = await service.advanceStage(
+        'txn-id',
+        TransactionStage.title_deed,
+      );
       expect(result.stage).toBe(TransactionStage.title_deed);
     });
 
@@ -96,7 +111,10 @@ describe('TransactionsService', () => {
       const txn = makeTransaction({ stage: TransactionStage.title_deed });
       mockFindById.mockReturnValue({ exec: () => Promise.resolve(txn) });
       mockSave.mockResolvedValue({ ...txn, stage: TransactionStage.completed });
-      const result = await service.advanceStage('txn-id', TransactionStage.completed);
+      const result = await service.advanceStage(
+        'txn-id',
+        TransactionStage.completed,
+      );
       expect(result.stage).toBe(TransactionStage.completed);
     });
   });
@@ -114,19 +132,34 @@ describe('TransactionsService', () => {
     };
 
     it('agreement → title_deed throws BadRequestException (skip)', () =>
-      rejectsWithBadRequest(TransactionStage.agreement, TransactionStage.title_deed));
+      rejectsWithBadRequest(
+        TransactionStage.agreement,
+        TransactionStage.title_deed,
+      ));
 
     it('agreement → completed throws BadRequestException (skip)', () =>
-      rejectsWithBadRequest(TransactionStage.agreement, TransactionStage.completed));
+      rejectsWithBadRequest(
+        TransactionStage.agreement,
+        TransactionStage.completed,
+      ));
 
     it('earnest_money → agreement throws BadRequestException (backwards)', () =>
-      rejectsWithBadRequest(TransactionStage.earnest_money, TransactionStage.agreement));
+      rejectsWithBadRequest(
+        TransactionStage.earnest_money,
+        TransactionStage.agreement,
+      ));
 
     it('completed → title_deed throws BadRequestException (backwards)', () =>
-      rejectsWithBadRequest(TransactionStage.completed, TransactionStage.title_deed));
+      rejectsWithBadRequest(
+        TransactionStage.completed,
+        TransactionStage.title_deed,
+      ));
 
     it('completed → completed throws BadRequestException (already completed)', () =>
-      rejectsWithBadRequest(TransactionStage.completed, TransactionStage.completed));
+      rejectsWithBadRequest(
+        TransactionStage.completed,
+        TransactionStage.completed,
+      ));
   });
 
   describe('advanceStage — side effects', () => {
@@ -135,15 +168,22 @@ describe('TransactionsService', () => {
       mockFindById.mockReturnValue({ exec: () => Promise.resolve(txn) });
       mockSave.mockResolvedValue({ ...txn, stage: TransactionStage.completed });
       await service.advanceStage('txn-id', TransactionStage.completed);
-      expect(mockCommissionsService.createForTransaction).toHaveBeenCalledTimes(1);
+      expect(mockCommissionsService.createForTransaction).toHaveBeenCalledTimes(
+        1,
+      );
     });
 
     it('transitioning to a non-completed stage does NOT trigger commission', async () => {
       const txn = makeTransaction({ stage: TransactionStage.agreement });
       mockFindById.mockReturnValue({ exec: () => Promise.resolve(txn) });
-      mockSave.mockResolvedValue({ ...txn, stage: TransactionStage.earnest_money });
+      mockSave.mockResolvedValue({
+        ...txn,
+        stage: TransactionStage.earnest_money,
+      });
       await service.advanceStage('txn-id', TransactionStage.earnest_money);
-      expect(mockCommissionsService.createForTransaction).not.toHaveBeenCalled();
+      expect(
+        mockCommissionsService.createForTransaction,
+      ).not.toHaveBeenCalled();
     });
   });
 

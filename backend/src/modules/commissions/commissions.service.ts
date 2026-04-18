@@ -1,4 +1,8 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import {
@@ -20,7 +24,10 @@ export class CommissionsService {
     private breakdownModel: Model<CommissionBreakdownDocument>,
   ) {}
 
-  calculateBreakdown(totalServiceFee: number, isSameAgent: boolean): BreakdownResult {
+  calculateBreakdown(
+    totalServiceFee: number,
+    isSameAgent: boolean,
+  ): BreakdownResult {
     if (totalServiceFee <= 0) {
       throw new BadRequestException('totalServiceFee must be positive');
     }
@@ -52,8 +59,12 @@ export class CommissionsService {
     return doc.save();
   }
 
-  async findByTransaction(transactionId: string): Promise<CommissionBreakdownDocument> {
-    const breakdown = await this.breakdownModel.findOne({ transactionId }).exec();
+  async findByTransaction(
+    transactionId: string,
+  ): Promise<CommissionBreakdownDocument> {
+    const breakdown = await this.breakdownModel
+      .findOne({ transactionId })
+      .exec();
     if (!breakdown) {
       throw new NotFoundException(
         `No commission breakdown found for transaction ${transactionId}`,

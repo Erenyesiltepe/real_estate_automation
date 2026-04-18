@@ -1,5 +1,20 @@
-import { Body, Controller, Get, Param, Patch, Post, Query, UseGuards } from '@nestjs/common';
-import { ApiBearerAuth, ApiOperation, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Patch,
+  Post,
+  Query,
+  UseGuards,
+} from '@nestjs/common';
+import {
+  ApiBearerAuth,
+  ApiOperation,
+  ApiQuery,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import { TransactionsService } from './transactions.service';
 import { CreateTransactionDto } from './dto/create-transaction.dto';
 import { UpdateStageDto } from './dto/update-stage.dto';
@@ -34,7 +49,9 @@ export class TransactionsController {
   }
 
   @Get(':id')
-  @ApiOperation({ summary: 'Get a transaction by ID (agents and property populated)' })
+  @ApiOperation({
+    summary: 'Get a transaction by ID (agents and property populated)',
+  })
   @ApiResponse({ status: 200, description: 'Transaction detail' })
   @ApiResponse({ status: 404, description: 'Transaction not found' })
   findOne(@Param('id') id: string) {

@@ -69,20 +69,28 @@ describe('CommissionsService', () => {
   describe('General', () => {
     it('amounts sum to totalServiceFee — same agent', () => {
       const r = service.calculateBreakdown(fee, true);
-      expect(r.agencyAmount + r.listingAgentAmount + r.sellingAgentAmount).toBe(fee);
+      expect(r.agencyAmount + r.listingAgentAmount + r.sellingAgentAmount).toBe(
+        fee,
+      );
     });
 
     it('amounts sum to totalServiceFee — different agents', () => {
       const r = service.calculateBreakdown(fee, false);
-      expect(r.agencyAmount + r.listingAgentAmount + r.sellingAgentAmount).toBe(fee);
+      expect(r.agencyAmount + r.listingAgentAmount + r.sellingAgentAmount).toBe(
+        fee,
+      );
     });
 
     it('throws BadRequestException if totalServiceFee is zero', () => {
-      expect(() => service.calculateBreakdown(0, false)).toThrow(BadRequestException);
+      expect(() => service.calculateBreakdown(0, false)).toThrow(
+        BadRequestException,
+      );
     });
 
     it('throws BadRequestException if totalServiceFee is negative', () => {
-      expect(() => service.calculateBreakdown(-500, false)).toThrow(BadRequestException);
+      expect(() => service.calculateBreakdown(-500, false)).toThrow(
+        BadRequestException,
+      );
     });
   });
 });

@@ -55,19 +55,21 @@ describe('AuthService', () => {
   });
 
   it('throws UnauthorizedException if user not found', async () => {
-    mockUsersService.findByEmail.mockRejectedValue(new NotFoundException('not found'));
-
-    await expect(service.signIn('noone@example.com', 'password123')).rejects.toThrow(
-      UnauthorizedException,
+    mockUsersService.findByEmail.mockRejectedValue(
+      new NotFoundException('not found'),
     );
+
+    await expect(
+      service.signIn('noone@example.com', 'password123'),
+    ).rejects.toThrow(UnauthorizedException);
   });
 
   it('throws UnauthorizedException if password is wrong', async () => {
     mockUser.passwordHash = await bcrypt.hash('correctpassword', 10);
     mockUsersService.findByEmail.mockResolvedValue(mockUser);
 
-    await expect(service.signIn('test@example.com', 'wrongpassword')).rejects.toThrow(
-      UnauthorizedException,
-    );
+    await expect(
+      service.signIn('test@example.com', 'wrongpassword'),
+    ).rejects.toThrow(UnauthorizedException);
   });
 });

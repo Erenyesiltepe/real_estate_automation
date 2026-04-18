@@ -1,7 +1,14 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { Transaction, TransactionDocument } from './schemas/transactions.schema';
+import {
+  Transaction,
+  TransactionDocument,
+} from './schemas/transactions.schema';
 import { CreateTransactionDto } from './dto/create-transaction.dto';
 import { TransactionStage } from '../../common/enums/transaction-stage.enum';
 import { UsersService } from '../users/users.service';
@@ -18,7 +25,8 @@ const STAGE_ORDER: TransactionStage[] = [
 @Injectable()
 export class TransactionsService {
   constructor(
-    @InjectModel(Transaction.name) private transactionModel: Model<TransactionDocument>,
+    @InjectModel(Transaction.name)
+    private transactionModel: Model<TransactionDocument>,
     private readonly usersService: UsersService,
     private readonly propertiesService: PropertiesService,
     private readonly commissionsService: CommissionsService,
@@ -56,7 +64,10 @@ export class TransactionsService {
     return transaction;
   }
 
-  async advanceStage(id: string, newStage: TransactionStage): Promise<TransactionDocument> {
+  async advanceStage(
+    id: string,
+    newStage: TransactionStage,
+  ): Promise<TransactionDocument> {
     const transaction = await this.transactionModel.findById(id).exec();
     if (!transaction) {
       throw new NotFoundException(`Transaction ${id} not found`);
