@@ -7,16 +7,19 @@ import {
   Param,
   Patch,
   Post,
+  Query,
 } from '@nestjs/common';
 import {
   ApiBearerAuth,
   ApiOperation,
+  ApiQuery,
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { UserRole } from '../../common/enums/user-role.enum';
 
 @ApiTags('users')
 @ApiBearerAuth()
@@ -35,9 +38,10 @@ export class UsersController {
 
   @Get()
   @ApiOperation({ summary: 'Get all active users' })
+  @ApiQuery({ name: 'role', enum: UserRole, required: false })
   @ApiResponse({ status: 200, description: 'List of active users' })
-  findAll() {
-    return this.usersService.findAll();
+  findAll(@Query('role') role?: UserRole) {
+    return this.usersService.findAll(role);
   }
 
   @Get(':id')

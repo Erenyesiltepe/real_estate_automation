@@ -44,7 +44,7 @@ describe('TransactionsService', () => {
 
   beforeEach(async () => {
     jest.clearAllMocks();
-    mockUsersService.findOne.mockResolvedValue({});
+    mockUsersService.findOne.mockResolvedValue({ role: 'agent' });
     mockPropertiesService.findOne.mockResolvedValue({});
     mockCommissionsService.createForTransaction.mockResolvedValue({});
 
@@ -75,6 +75,36 @@ describe('TransactionsService', () => {
         totalServiceFee: 25000,
       });
       expect(result.stage).toBe(TransactionStage.agreement);
+    });
+
+    it('throws BadRequestException if listing agent is an admin', async () => {
+      mockUsersService.findOne
+        .mockResolvedValueOnce({ role: 'admin' })
+        .mockResolvedValueOnce({ role: 'agent' });
+      await expect(
+        service.create({
+          propertyId: 'prop-id',
+          listingAgentId: 'admin-1',
+          sellingAgentId: 'agent-2',
+          salePrice: 500000,
+          totalServiceFee: 25000,
+        }),
+      ).rejects.toThrow(BadRequestException);
+    });
+
+    it('throws BadRequestException if selling agent is an admin', async () => {
+      mockUsersService.findOne
+        .mockResolvedValueOnce({ role: 'agent' })
+        .mockResolvedValueOnce({ role: 'admin' });
+      await expect(
+        service.create({
+          propertyId: 'prop-id',
+          listingAgentId: 'agent-1',
+          sellingAgentId: 'admin-1',
+          salePrice: 500000,
+          totalServiceFee: 25000,
+        }),
+      ).rejects.toThrow(BadRequestException);
     });
   });
 

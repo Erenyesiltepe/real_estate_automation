@@ -28,8 +28,10 @@ export class UsersService {
     return created.save();
   }
 
-  findAll(): Promise<UserDocument[]> {
-    return this.userModel.find({ isActive: true }).exec();
+  findAll(role?: UserRole): Promise<UserDocument[]> {
+    const filter: Record<string, unknown> = { isActive: true };
+    if (role) filter['role'] = role;
+    return this.userModel.find(filter).exec();
   }
 
   async findOne(id: string): Promise<UserDocument> {

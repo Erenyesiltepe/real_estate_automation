@@ -11,6 +11,7 @@ import {
 } from './schemas/transactions.schema';
 import { CreateTransactionDto } from './dto/create-transaction.dto';
 import { TransactionStage } from '../../common/enums/transaction-stage.enum';
+import { UserRole } from '../../common/enums/user-role.enum';
 import { UsersService } from '../users/users.service';
 import { PropertiesService } from '../properties/properties.service';
 import { CommissionsService } from '../commissions/commissions.service';
@@ -33,11 +34,14 @@ export class TransactionsService {
   ) {}
 
   async create(dto: CreateTransactionDto): Promise<TransactionDocument> {
-    await Promise.all([
+    const [listingAgent, sellingAgent] = await Promise.all([
       this.usersService.findOne(dto.listingAgentId),
       this.usersService.findOne(dto.sellingAgentId),
       this.propertiesService.findOne(dto.propertyId),
     ]);
+    if (listingAgent.role !== UserRole.agent || sellingAgent.role !== UserRole.agent) {
+      throw new BadRequestException('Listing and selling agents must have the agent role');
+    }
     const created = new this.transactionModel({
       ...dto,
       stage: TransactionStage.agreement,

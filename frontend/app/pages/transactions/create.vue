@@ -199,7 +199,7 @@ const authHeaders = { Authorization: `Bearer ${auth.token}` }
 const { data: properties, pending: propertiesPending } = await useFetch<Property[]>('/api/properties', {
   headers: authHeaders,
 })
-const { data: agents, pending: agentsPending } = await useFetch<Agent[]>('/api/users', {
+const { data: agents, pending: agentsPending } = await useFetch<Agent[]>('/api/users?role=agent', {
   headers: authHeaders,
 })
 
