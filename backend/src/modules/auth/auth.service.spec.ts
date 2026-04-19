@@ -72,4 +72,13 @@ describe('AuthService', () => {
       service.signIn('test@example.com', 'wrongpassword'),
     ).rejects.toThrow(UnauthorizedException);
   });
+
+  it('throws UnauthorizedException if user is not admin', async () => {
+    mockUser.passwordHash = await bcrypt.hash('password123', 10);
+    mockUsersService.findByEmail.mockResolvedValue({ ...mockUser, role: 'agent' });
+
+    await expect(
+      service.signIn('agent@example.com', 'password123'),
+    ).rejects.toThrow(UnauthorizedException);
+  });
 });

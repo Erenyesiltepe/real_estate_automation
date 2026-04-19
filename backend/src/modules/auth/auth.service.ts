@@ -6,6 +6,7 @@ import {
 import { UsersService } from '../users/users.service';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcryptjs';
+import { UserRole } from '../../common/enums/user-role.enum';
 
 @Injectable()
 export class AuthService {
@@ -25,6 +26,8 @@ export class AuthService {
 
     const isMatch = await bcrypt.compare(password, user.passwordHash);
     if (!isMatch) throw new UnauthorizedException();
+
+    if (user.role !== UserRole.admin) throw new UnauthorizedException();
 
     const payload = { sub: user._id, email: user.email, role: user.role };
     return { access_token: await this.jwtService.signAsync(payload) };
