@@ -200,10 +200,15 @@ frontend/
 │   ├── agents/
 │   │   ├── index.vue          → /agents
 │   │   ├── create.vue         → /agents/create
-│   │   └── [id].vue           → /agents/:id
+│   │   └── [id]/
+│   │       ├── index.vue      → /agents/:id
+│   │       └── edit.vue       → /agents/:id/edit
 │   ├── properties/
 │   │   ├── index.vue          → /properties
-│   │   └── create.vue         → /properties/create
+│   │   ├── create.vue         → /properties/create
+│   │   └── [id]/
+│   │       ├── index.vue      → /properties/:id
+│   │       └── edit.vue       → /properties/:id/edit
 │   └── transactions/
 │       ├── index.vue          → /transactions
 │       ├── create.vue         → /transactions/create
@@ -222,9 +227,12 @@ frontend/
 | `/` | Dashboard overview |
 | `/agents` | List all agents |
 | `/agents/create` | Create agent form |
-| `/agents/:id` | Agent detail: profile header, 2×2 summary cards (total transactions, sale volume, commission earned, role split), filterable and paginated transaction list |
+| `/agents/:id` | Agent detail: profile header, 2×2 summary cards (total transactions, sale volume, commission earned, role split), filterable and paginated transaction list; Edit and Delete buttons |
+| `/agents/:id/edit` | Edit agent form (name, email, role, phone); Delete button |
 | `/properties` | List all properties |
 | `/properties/create` | Create property form |
+| `/properties/:id` | Property detail: all fields read-only; Edit and Delete buttons |
+| `/properties/:id/edit` | Edit property form (all fields including status); Delete button |
 | `/transactions` | List all transactions with stage badges |
 | `/transactions/create` | Create transaction form |
 | `/transactions/:id` | Transaction detail, stage control, commission breakdown |
