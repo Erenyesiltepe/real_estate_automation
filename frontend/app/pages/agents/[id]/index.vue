@@ -3,10 +3,17 @@
     <header class="bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between">
       <div class="flex items-center gap-3">
         <NuxtLink
+          to="/"
+          class="text-sm text-gray-500 hover:text-gray-900 transition-colors"
+        >
+          Dashboard
+        </NuxtLink>
+        <span class="text-gray-300">/</span>
+        <NuxtLink
           to="/agents"
           class="text-sm text-gray-500 hover:text-gray-900 transition-colors"
         >
-          ← Agents
+          Agents
         </NuxtLink>
         <span class="text-gray-300">/</span>
         <span class="text-sm font-semibold text-gray-900">{{ agent?.name }}</span>
