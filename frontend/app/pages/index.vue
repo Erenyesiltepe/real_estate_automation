@@ -168,7 +168,7 @@ const stats = computed(() => [
     value: users.value?.filter(u => u.isActive).length ?? 0,
   },
   {
-    label: 'Available',
+    label: 'Available Properties',
     value: properties.value?.filter(p => p.status === 'available').length ?? 0,
   },
   {
@@ -176,7 +176,7 @@ const stats = computed(() => [
     value: transactions.value?.length ?? 0,
   },
   {
-    label: 'Completed',
+    label: 'Completed Transactions',
     value: transactions.value?.filter(t => t.stage === 'completed').length ?? 0,
   },
 ])
