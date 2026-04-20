@@ -77,7 +77,9 @@
                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wide">
                   Price
                 </th>
-                <th class="px-6 py-3" />
+                <th class="px-6 py-3">
+                  Actions
+                </th>
               </tr>
             </thead>
             <tbody class="divide-y divide-gray-50">
@@ -87,7 +89,12 @@
                 class="hover:bg-gray-50 transition-colors"
               >
                 <td class="px-6 py-4 font-medium text-gray-900">
-                  {{ property.title }}
+                  <NuxtLink
+                    :to="`/properties/${property._id}`"
+                    class="hover:underline hover:text-gray-600 transition-colors"
+                  >
+                    {{ property.title }}
+                  </NuxtLink>
                 </td>
                 <td class="px-6 py-4 text-gray-600 max-w-[200px] truncate">
                   {{ property.address }}
@@ -108,14 +115,28 @@
                 <td class="px-6 py-4 font-medium text-gray-900">
                   {{ formatCurrency(property.price) }}
                 </td>
-                <td class="px-6 py-4 text-right">
-                  <button
-                    :disabled="deleting === property._id"
-                    class="text-xs text-red-500 hover:text-red-700 disabled:opacity-40 transition-colors"
-                    @click="deleteProperty(property._id, property.title)"
-                  >
-                    {{ deleting === property._id ? 'Deleting…' : 'Delete' }}
-                  </button>
+                <td class="px-6 py-4">
+                  <div class="flex items-center justify-end gap-3">
+                    <NuxtLink
+                      :to="`/properties/${property._id}`"
+                      class="text-s p-2 text-gray-500 hover:text-gray-900 transition-colors"
+                    >
+                      View
+                    </NuxtLink>
+                    <NuxtLink
+                      :to="`/properties/${property._id}/edit`"
+                      class="text-s p-2 text-gray-500 hover:text-gray-900 transition-colors"
+                    >
+                      Edit
+                    </NuxtLink>
+                    <button
+                      :disabled="deleting === property._id"
+                      class="text-s p-2 text-red-500 hover:text-red-700 disabled:opacity-40 transition-colors"
+                      @click="deleteProperty(property._id, property.title)"
+                    >
+                      {{ deleting === property._id ? 'Deleting…' : 'Delete' }}
+                    </button>
+                  </div>
                 </td>
               </tr>
             </tbody>

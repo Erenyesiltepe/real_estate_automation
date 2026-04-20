@@ -89,7 +89,12 @@
                 class="hover:bg-gray-50 transition-colors"
               >
                 <td class="px-6 py-4 text-center font-medium text-gray-900">
-                  {{ agent.name }}
+                  <NuxtLink
+                    :to="`/agents/${agent._id}`"
+                    class="hover:underline hover:text-gray-600 transition-colors"
+                  >
+                    {{ agent.name }}
+                  </NuxtLink>
                 </td>
                 <td class="px-6 py-4 text-center text-gray-600">
                   {{ agent.email }}
@@ -111,13 +116,19 @@
                 <td class="px-6 py-4 text-center">
                   <NuxtLink
                     :to="`/agents/${agent._id}`"
-                    class="text-xs text-gray-500 hover:text-gray-900 transition-colors mr-4"
+                    class="text-s p-2 text-gray-500 hover:text-gray-900 transition-colors mr-4"
                   >
                     View
                   </NuxtLink>
+                  <NuxtLink
+                    :to="`/agents/${agent._id}/edit`"
+                    class="text-s p-2 text-gray-500 hover:text-gray-900 transition-colors mr-4"
+                  >
+                    Edit
+                  </NuxtLink>
                   <button
                     :disabled="deleting === agent._id"
-                    class="text-xs text-red-500 hover:text-red-700 disabled:opacity-40 transition-colors"
+                    class="text-s p-2 text-red-500 hover:text-red-700 disabled:opacity-40 transition-colors"
                     @click="deleteAgent(agent._id, agent.name)"
                   >
                     {{ deleting === agent._id ? 'Removing…' : 'Remove' }}

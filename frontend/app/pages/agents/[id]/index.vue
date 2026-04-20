@@ -11,12 +11,37 @@
         <span class="text-gray-300">/</span>
         <span class="text-sm font-semibold text-gray-900">{{ agent?.name }}</span>
       </div>
+      <div
+        v-if="agent"
+        class="flex items-center gap-3"
+      >
+        <NuxtLink
+          :to="`/agents/${id}/edit`"
+          class="px-3 py-1.5 bg-gray-900 text-white text-sm font-medium rounded-lg hover:bg-gray-700 transition-colors"
+        >
+          Edit
+        </NuxtLink>
+        <button
+          :disabled="deleting"
+          class="text-sm text-red-500 hover:text-red-700 disabled:opacity-40 transition-colors"
+          @click="handleDelete"
+        >
+          {{ deleting ? 'Deleting…' : 'Delete' }}
+        </button>
+      </div>
     </header>
 
     <main
       v-if="agent"
       class="max-w-5xl mx-auto px-6 py-8 space-y-6"
     >
+      <div
+        v-if="deleteError"
+        class="px-4 py-3 bg-red-50 border border-red-200 rounded-xl text-sm text-red-700"
+      >
+        {{ deleteError }}
+      </div>
+
       <!-- Agent profile -->
       <div class="flex items-center gap-4">
         <div class="w-12 h-12 rounded-full bg-gray-900 flex items-center justify-center text-white text-lg font-bold flex-shrink-0">
@@ -347,5 +372,25 @@ function formatDate(d: string) {
     day: 'numeric',
     year: 'numeric',
   })
+}
+
+const deleting = ref(false)
+const deleteError = ref<string | null>(null)
+
+async function handleDelete() {
+  if (!confirm(`Delete "${agent.value?.name}"? This cannot be undone.`)) return
+  deleting.value = true
+  deleteError.value = null
+  try {
+    await $fetch(`/api/users/${id}`, { method: 'DELETE', headers: authHeaders })
+    await navigateTo('/agents')
+  }
+  catch (err: unknown) {
+    const e = err as { data?: { message?: string } }
+    deleteError.value = e.data?.message || 'Failed to delete agent.'
+  }
+  finally {
+    deleting.value = false
+  }
 }
 </script>
