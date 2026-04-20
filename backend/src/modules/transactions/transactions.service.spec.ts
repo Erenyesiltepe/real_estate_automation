@@ -225,4 +225,48 @@ describe('TransactionsService', () => {
       ).rejects.toThrow(NotFoundException);
     });
   });
+
+  describe('findByAgent', () => {
+    const makeTxns = () => [
+      makeTransaction({ listingAgentId: { toString: () => 'agent-1' } }),
+      makeTransaction({ sellingAgentId: { toString: () => 'agent-1' } }),
+    ];
+
+    it('queries by $or on listingAgentId and sellingAgentId', async () => {
+      const txns = makeTxns();
+      const mockExec = jest.fn().mockResolvedValue(txns);
+      const mockPopulate = jest.fn().mockReturnValue({ exec: mockExec });
+      mockFind.mockReturnValue({ populate: mockPopulate });
+
+      await service.findByAgent('agent-1');
+
+      expect(mockFind).toHaveBeenCalledWith({
+        $or: [{ listingAgentId: 'agent-1' }, { sellingAgentId: 'agent-1' }],
+      });
+      expect(mockPopulate).toHaveBeenCalledWith('propertyId');
+    });
+
+    it('adds stage filter to query when stage is provided', async () => {
+      const mockExec = jest.fn().mockResolvedValue([]);
+      const mockPopulate = jest.fn().mockReturnValue({ exec: mockExec });
+      mockFind.mockReturnValue({ populate: mockPopulate });
+
+      await service.findByAgent('agent-1', TransactionStage.completed);
+
+      expect(mockFind).toHaveBeenCalledWith({
+        $or: [{ listingAgentId: 'agent-1' }, { sellingAgentId: 'agent-1' }],
+        stage: TransactionStage.completed,
+      });
+    });
+
+    it('returns the results from the model', async () => {
+      const txns = makeTxns();
+      const mockExec = jest.fn().mockResolvedValue(txns);
+      mockFind.mockReturnValue({ populate: jest.fn().mockReturnValue({ exec: mockExec }) });
+
+      const result = await service.findByAgent('agent-1');
+
+      expect(result).toEqual(txns);
+    });
+  });
 });

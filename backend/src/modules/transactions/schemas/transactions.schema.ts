@@ -9,10 +9,10 @@ export class Transaction {
   @Prop({ required: true, type: Types.ObjectId, ref: 'Property' })
   propertyId!: Types.ObjectId;
 
-  @Prop({ required: true, type: Types.ObjectId, ref: 'User' })
+  @Prop({ required: true, type: Types.ObjectId, ref: 'User', index: true })
   listingAgentId!: Types.ObjectId;
 
-  @Prop({ required: true, type: Types.ObjectId, ref: 'User' })
+  @Prop({ required: true, type: Types.ObjectId, ref: 'User', index: true })
   sellingAgentId!: Types.ObjectId;
 
   @Prop({ required: true })

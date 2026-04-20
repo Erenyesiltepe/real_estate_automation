@@ -62,22 +62,24 @@
           <table class="w-full text-sm">
             <thead>
               <tr class="border-b border-gray-100">
-                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wide">
+                <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wide">
                   Name
                 </th>
-                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wide">
+                <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wide">
                   Email
                 </th>
-                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wide">
+                <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wide">
                   Role
                 </th>
-                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wide">
+                <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wide">
                   Phone
                 </th>
-                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wide">
+                <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wide">
                   Joined
                 </th>
-                <th class="px-6 py-3" />
+                <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wide">
+                  Actions
+                </th>
               </tr>
             </thead>
             <tbody class="divide-y divide-gray-50">
@@ -86,13 +88,13 @@
                 :key="agent._id"
                 class="hover:bg-gray-50 transition-colors"
               >
-                <td class="px-6 py-4 font-medium text-gray-900">
+                <td class="px-6 py-4 text-center font-medium text-gray-900">
                   {{ agent.name }}
                 </td>
-                <td class="px-6 py-4 text-gray-600">
+                <td class="px-6 py-4 text-center text-gray-600">
                   {{ agent.email }}
                 </td>
-                <td class="px-6 py-4">
+                <td class="px-6 py-4 text-center">
                   <span
                     class="inline-flex px-2 py-0.5 rounded-full text-xs font-medium"
                     :class="agent.role === 'admin' ? 'bg-gray-900 text-white' : 'bg-gray-100 text-gray-700'"
@@ -100,13 +102,19 @@
                     {{ agent.role }}
                   </span>
                 </td>
-                <td class="px-6 py-4 text-gray-500">
+                <td class="px-6 py-4 text-center text-gray-500">
                   {{ agent.phone || '—' }}
                 </td>
-                <td class="px-6 py-4 text-gray-500">
+                <td class="px-6 py-4 text-center text-gray-500">
                   {{ formatDate(agent.createdAt) }}
                 </td>
-                <td class="px-6 py-4 text-right">
+                <td class="px-6 py-4 text-center">
+                  <NuxtLink
+                    :to="`/agents/${agent._id}`"
+                    class="text-xs text-gray-500 hover:text-gray-900 transition-colors mr-4"
+                  >
+                    View
+                  </NuxtLink>
                   <button
                     :disabled="deleting === agent._id"
                     class="text-xs text-red-500 hover:text-red-700 disabled:opacity-40 transition-colors"

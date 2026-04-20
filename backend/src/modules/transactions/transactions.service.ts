@@ -68,6 +68,20 @@ export class TransactionsService {
     return transaction;
   }
 
+  findByAgent(
+    agentId: string,
+    stage?: TransactionStage,
+  ): Promise<TransactionDocument[]> {
+    const filter: Record<string, unknown> = {
+      $or: [{ listingAgentId: agentId }, { sellingAgentId: agentId }],
+    };
+    if (stage) filter['stage'] = stage;
+    return this.transactionModel
+      .find(filter)
+      .populate('propertyId')
+      .exec();
+  }
+
   async advanceStage(
     id: string,
     newStage: TransactionStage,

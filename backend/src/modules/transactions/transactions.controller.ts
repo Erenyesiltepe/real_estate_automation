@@ -48,6 +48,17 @@ export class TransactionsController {
     return this.transactionsService.findAll(stage);
   }
 
+  @Get('agent/:agentId')
+  @ApiOperation({ summary: 'List transactions for a specific agent' })
+  @ApiQuery({ name: 'stage', enum: TransactionStage, required: false })
+  @ApiResponse({ status: 200, description: 'List of transactions' })
+  findByAgent(
+    @Param('agentId') agentId: string,
+    @Query('stage') stage?: TransactionStage,
+  ) {
+    return this.transactionsService.findByAgent(agentId, stage);
+  }
+
   @Get(':id')
   @ApiOperation({
     summary: 'Get a transaction by ID (agents and property populated)',
