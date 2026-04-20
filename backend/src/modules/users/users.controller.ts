@@ -8,6 +8,7 @@ import {
   Patch,
   Post,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import {
   ApiBearerAuth,
@@ -20,14 +21,18 @@ import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UserRole } from '../../common/enums/user-role.enum';
+import { Roles } from '../auth/roles.decorator';
+import { RolesGuard } from '../auth/roles.guard';
 
 @ApiTags('users')
 @ApiBearerAuth()
+@UseGuards(RolesGuard)
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Post()
+  @Roles(UserRole.admin)
   @ApiOperation({ summary: 'Create a new user' })
   @ApiResponse({ status: 201, description: 'User created' })
   @ApiResponse({ status: 400, description: 'Validation error' })
@@ -53,6 +58,7 @@ export class UsersController {
   }
 
   @Patch(':id')
+  @Roles(UserRole.admin)
   @ApiOperation({ summary: 'Update a user' })
   @ApiResponse({ status: 200, description: 'User updated' })
   @ApiResponse({ status: 404, description: 'User not found' })
@@ -61,6 +67,7 @@ export class UsersController {
   }
 
   @Delete(':id')
+  @Roles(UserRole.admin)
   @HttpCode(204)
   @ApiOperation({ summary: 'Soft-delete a user' })
   @ApiResponse({ status: 204, description: 'User deactivated' })

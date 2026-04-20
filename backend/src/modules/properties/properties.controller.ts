@@ -30,7 +30,7 @@ export class PropertiesController {
   constructor(private readonly propertiesService: PropertiesService) {}
 
   @Post()
-  @Roles(UserRole.admin, UserRole.agent)
+  @Roles(UserRole.admin)
   @ApiOperation({ summary: 'Create a new property' })
   @ApiResponse({ status: 201, description: 'Property created' })
   @ApiResponse({ status: 400, description: 'Validation error' })
@@ -56,7 +56,7 @@ export class PropertiesController {
   }
 
   @Patch(':id')
-  @Roles(UserRole.admin, UserRole.agent)
+  @Roles(UserRole.admin)
   @ApiOperation({ summary: 'Update a property' })
   @ApiResponse({ status: 200, description: 'Property updated' })
   @ApiResponse({ status: 403, description: 'Forbidden' })
