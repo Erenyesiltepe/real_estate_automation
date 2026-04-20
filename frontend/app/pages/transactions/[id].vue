@@ -302,7 +302,7 @@
                   {{ transaction.listingAgentId.name }}
                 </div>
                 <div class="text-xs text-gray-400">
-                  Listing agent
+                  {{ commission.isSameAgent ? 'Listing / Selling Agent' : 'Listing agent' }}
                 </div>
               </div>
               <div class="text-base font-bold text-gray-900">
@@ -318,7 +318,10 @@
             </div>
           </div>
           <!-- Selling agent row -->
-          <div class="px-6 py-4">
+          <div
+            v-if="!commission.isSameAgent"
+            class="px-6 py-4"
+          >
             <div class="flex items-center justify-between mb-2">
               <div>
                 <div class="text-sm font-medium text-gray-900">
@@ -460,13 +463,13 @@ const currentStageIdx = computed(() =>
 )
 
 const config = computed(() =>
-  STAGE_CONFIG[transaction.value?.stage ?? 'agreement'],
+  STAGE_CONFIG[transaction.value?.stage ?? 'agreement']!,
 )
 
 const nextStage = computed<Stage | null>(() => {
   if (!transaction.value) return null
   const idx = STAGE_ORDER.indexOf(transaction.value.stage)
-  return idx < STAGE_ORDER.length - 1 ? STAGE_ORDER[idx + 1] : null
+  return idx < STAGE_ORDER.length - 1 ? (STAGE_ORDER[idx + 1] ?? null) : null
 })
 
 const advancing = ref(false)
