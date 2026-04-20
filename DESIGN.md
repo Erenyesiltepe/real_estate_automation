@@ -254,7 +254,7 @@ All routes except `/login` are protected by `middleware/auth.ts` applied globall
 
 ## Implementation Strategy
 
-Backend is completed and fully verified before frontend development begins. Each backend phase is tested manually with Postman after implementation. The full test suite must pass before frontend work starts. This ensures the frontend is built against a stable, known API with consistent response shapes.
+Backend is completed and fully verified before frontend development begins. Each backend phase is tested manually with OpenAPI after implementation. The full test suite must pass before frontend work starts. This ensures the frontend is built against a stable, known API with consistent response shapes.
 
 ---
 
