@@ -8,12 +8,21 @@
     >
       <!-- Top bar -->
       <div class="max-w-3xl mx-auto flex items-center justify-between mb-8">
-        <NuxtLink
-          to="/transactions"
-          class="text-sm font-medium text-white/70 hover:text-white transition-colors"
-        >
-          ← Transactions
-        </NuxtLink>
+        <div class="flex items-center gap-3">
+          <NuxtLink
+            to="/"
+            class="text-sm font-medium text-white/70 hover:text-white transition-colors"
+          >
+            Dashboard
+          </NuxtLink>
+          <span class="text-white/30">/</span>
+          <NuxtLink
+            to="/transactions"
+            class="text-sm font-medium text-white/70 hover:text-white transition-colors"
+          >
+            Transactions
+          </NuxtLink>
+        </div>
         <span class="text-xs font-semibold px-3 py-1 rounded-full bg-black/20 text-white tracking-wide uppercase">
           {{ formatStage(transaction?.stage ?? '') }}
         </span>
